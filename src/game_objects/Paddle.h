@@ -13,9 +13,10 @@ struct Paddle {
     int move_speed = 10;
     int height, x_pos, y_pos, max_y_pos;
 
+    void draw();
     void initialize(bool isPlayer, int winW, int winH);
     void move(Direction dir);
-    void draw();
+    void update();
 };
 
 

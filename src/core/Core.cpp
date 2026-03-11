@@ -20,8 +20,7 @@ int game_loop() {
 
     // Game object initialization
     Ball ball;
-    ball.x_pos = screen.center_width;
-    ball.y_pos = screen.center_height;
+    ball.initialize(screen.width, screen.height);   
 
     Paddle player;
     player.initialize(true, screen.width, screen.height);
@@ -35,23 +34,23 @@ int game_loop() {
     cout << "SCREEN " << screen.center_width << " " << screen.height << endl;
     while (WindowShouldClose() == false) {
 
+        // ---------------- Update objects here ------------------ //
+        ball.update();
+        player.update();      
+
+        // ----------------- Draw objects here ------------------- //
         BeginDrawing();
         ClearBackground(BLACK);
         
-        ball.x_pos += ball.x_speed;
-        ball.y_pos += ball.y_speed;
-        ball.check_position(screen.width, screen.height);
-       
-        // --------------- Draw objects here ------------------- //
         // Court
         court.draw(); 
-
-        // Ball 
-        ball.draw();       
 
         // Players
         player.draw();
         opponent.draw();
+
+        // Ball 
+        ball.draw();
 
         EndDrawing();
 

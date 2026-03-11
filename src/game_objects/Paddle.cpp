@@ -6,15 +6,15 @@ void Paddle::move(Direction dir) {
 
     if (dir == UP) {
 
-        if (y_pos > 0) {
-            y_pos += move_speed;
+        if (y_pos >= 0) {
+            y_pos -= move_speed;
         };
     
     }
     else if (dir == DOWN) {
 
         if (y_pos < max_y_pos) {
-            y_pos -= move_speed;
+            y_pos += move_speed;
         } 
 
     } 
@@ -40,6 +40,21 @@ void Paddle::initialize(bool isPlayer, int winW, int winH) {
 
 void Paddle::draw() {
     DrawRectangle(x_pos, y_pos, width, height, WHITE); 
+}
+
+void Paddle::update() {
+  
+    // Player movement
+    if (is_player) {
+        if (IsKeyDown(KEY_W)) {
+            move(UP); 
+        }
+        else if (IsKeyDown(KEY_S)) {
+            move(DOWN); 
+        }
+    }
+
+    // FIXME: AI movement here
 }
 
 

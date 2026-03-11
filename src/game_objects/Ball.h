@@ -9,8 +9,13 @@ struct Ball {
     int y_speed = 5;
     int radius = 15;
 
-    int check_position(int winW, int winH);
+    int max_width, max_height;
+
+    void initialize(int winW, int winH);
+    int check_position();
     void draw();
+    void move();
+    void update();
 
 };
 

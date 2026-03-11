@@ -2,13 +2,22 @@
 #include "raylib.h"
 
 
-int Ball::check_position(int winW, int winH) {
+void Ball::initialize(int winW, int winH) {
+    max_width = winW;
+    max_height = winH;
+    x_pos = winW / 2.0;
+    y_pos = winH / 2.0;
 
-    if (x_pos + radius >= winW || x_pos - radius <= 0) {
+}
+
+
+int Ball::check_position() {
+
+    if (x_pos + radius >= max_width || x_pos - radius <= 0) {
         x_speed *= -1;
     }
 
-    if (y_pos + radius >= winH || y_pos - radius <= 0) {
+    if (y_pos + radius >= max_height || y_pos - radius <= 0) {
         y_speed *= -1;
     }
 
@@ -17,8 +26,16 @@ int Ball::check_position(int winW, int winH) {
 
 
 void Ball::draw() {
-    
     DrawCircle(x_pos, y_pos, radius, ORANGE);
+}
 
+void Ball::move() {
+    x_pos += x_speed;
+    y_pos += y_speed;
+}
+
+void Ball::update() {
+    check_position();
+    move();
 }
 
