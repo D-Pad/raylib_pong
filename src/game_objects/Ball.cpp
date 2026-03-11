@@ -3,17 +3,10 @@
 #include <cmath>
 
 
-void Ball::initialize(int winW, int winH) {
-    max_width = winW;
-    max_height = winH;
-    x_pos = winW / 2.0;
-    y_pos = winH / 2.0;
-    acceleration = 0.1;
-}
-
-
 void Ball::draw() {
     DrawCircle(x_pos, y_pos, radius, ORANGE);
+    Point endSegment = get_center_line(true);
+    DrawLine(x_pos, y_pos, endSegment.x, endSegment.y, WHITE);
 }
 
 
@@ -28,7 +21,29 @@ void Ball::move() {
 
         x_pos += vx;
         y_pos += vy; 
+    
     }
+
+}
+
+
+double Ball::get_angle() {
+    return atan2(dy, dx);
+}
+
+
+Point Ball::get_center_line(bool longLength) {
+   
+    double r = radius;
+    
+    if (longLength) {
+        r *= 100.0;
+    }
+
+    return Point {
+        x_pos + r * cos(angle),
+        y_pos + r * sin(angle),
+    }; 
 }
 
 
@@ -43,7 +58,18 @@ void Ball::update() {
         dy *= -1;
     }
 
+    angle = get_angle();
     move();
+
 }
 
+
+void Ball::initialize(int winW, int winH) {
+    max_width = winW;
+    max_height = winH;
+    x_pos = winW / 2.0;
+    y_pos = winH / 2.0;
+    acceleration = 0.1;
+    angle = get_angle(); 
+}
 

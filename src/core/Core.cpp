@@ -1,6 +1,6 @@
 #include <iostream>
+#include <algorithm>
 #include <raylib.h>
-#include <cmath>
 #include "Cleanup.h"
 #include "Init.h"
 #include "../game_objects/Ball.h"
@@ -19,30 +19,26 @@ enum PaddleCollision {
 };
 
 
-PaddleCollision ball_paddle_collision(Ball ball, Paddle paddle) {
+bool ball_paddle_collision(Ball ball, Paddle paddle) {
     
     PaddleCollision collision = None;
 
-    Point top_front = paddle.hit_box.top_right;
-    Point btm_front = paddle.hit_box.bottom_right; 
+    float closest_x = std::clamp(
+        ball.x_pos, 
+        paddle.hit_box.top_left.x,
+        paddle.hit_box.bottom_right.x
+    );    
 
-    double x_dist_from_top = fabs(ball.x_pos - top_front.x);
-    double y_dist_from_top = fabs(ball.y_pos - top_front.y);
-    double x_dist_from_btm = fabs(ball.x_pos - btm_front.x);
-    double y_dist_from_btm = fabs(ball.y_pos - btm_front.y);
+    float closest_y = std::clamp(
+        ball.y_pos, 
+        paddle.hit_box.top_left.y,
+        paddle.hit_box.bottom_right.y
+    );
 
-    if (paddle.is_player) {
-        cout << "Closest: ";
-        if (y_dist_from_btm < y_dist_from_top) {
-            cout << "btm "; 
-        }
-        else {
-            cout << "top ";
-        }
-        cout << endl;
-    }
+    float dx = ball.x_pos - closest_x;
+    float dy = ball.y_pos - closest_y;
 
-    return collision;
+    return (dx * dx + dy * dy) <= (ball.radius * ball.radius);
 }
 
 
@@ -77,9 +73,28 @@ int game_loop() {
         bool player_hit = ball_paddle_collision(ball, player);
         bool opponent_hit = ball_paddle_collision(ball, opponent);
 
-        // if (player_hit || opponent_hit) {
-        //     ball.x_speed *= -1;
-        // }
+        if (player_hit || opponent_hit) {
+            
+            ball.dx *= -1;
+            
+            bool below_top = ball.y_pos <= player.hit_box.top_right.y;
+            bool above_btm = ball.y_pos >= player.hit_box.bottom_right.y;
+           
+            // Clip prevention
+            if (player_hit) {
+                double target = player.hit_box.top_right.x;
+                if (ball.x_pos - ball.radius <= target) {
+                    ball.x_pos = player.hit_box.top_right.x + ball.radius;
+                }
+            }
+            else if (opponent_hit) {
+                double target = opponent.hit_box.bottom_left.x;
+                if (ball.x_pos + ball.radius >= target) {
+                    ball.x_pos = opponent.hit_box.bottom_left.x - ball.radius;
+                }           
+            };
+        
+        }
 
         // ----------------- Draw objects here ------------------- //
         BeginDrawing();

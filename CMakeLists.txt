@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.11)
 project(PongClone)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # Fetch and build raylib as a static library
 include(FetchContent)
 set(RAYLIB_VERSION 5.5)
