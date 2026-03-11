@@ -13,25 +13,24 @@ int game_loop() {
 
     // Game screen initialization
     Screen screen;
-    screen.initialize(1920, 1080);
+    screen.initialize(1920, 1080, 60);
 
     InitWindow(screen.width, screen.height, "PONG!");
-    SetTargetFPS(60);
+    SetTargetFPS(screen.frame_rate);
 
     // Game object initialization
     Ball ball;
     ball.initialize(screen.width, screen.height);   
 
     Paddle player;
-    player.initialize(true, screen.width, screen.height);
+    player.initialize(true, screen.width, screen.height, screen.frame_rate);
 
     Paddle opponent;
-    opponent.initialize(false, screen.width, screen.height);
+    opponent.initialize(false, screen.width, screen.height, screen.frame_rate);
 
     Court court;
     court.initialize(screen.center_width, screen.height);
 
-    cout << "SCREEN " << screen.center_width << " " << screen.height << endl;
     while (WindowShouldClose() == false) {
 
         // ---------------- Update objects here ------------------ //
@@ -48,6 +47,7 @@ int game_loop() {
         // Players
         player.draw();
         opponent.draw();
+        cout << "Player speed: " << player.move_speed << endl;
 
         // Ball 
         ball.draw();
