@@ -1,5 +1,6 @@
 #include "Paddle.h"
 #include "raylib.h"
+#include "Point.h"
 #include <cmath>
 
 
@@ -77,6 +78,7 @@ void Paddle::draw() {
     DrawRectangle(x_pos, y_pos, width, height, WHITE); 
 }
 
+
 void Paddle::update() {
  
     // Wall collision detection
@@ -107,6 +109,15 @@ void Paddle::update() {
     }
 
     // FIXME: AI movement here
+
+    // Set the hit box
+    hit_box = PaddleHitBox { 
+        { (float)x_pos, (float)y_pos }, 
+        { (float)x_pos + width, (float)y_pos }, 
+        { (float)x_pos, (float)y_pos + height }, 
+        { (float)x_pos + width, (float)y_pos + height } 
+    };
+
 }
 
 

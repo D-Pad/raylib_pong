@@ -1,5 +1,6 @@
 #include <iostream>
 #include <raylib.h>
+#include <cmath>
 #include "Cleanup.h"
 #include "Init.h"
 #include "../game_objects/Ball.h"
@@ -7,6 +8,42 @@
 #include "../game_objects/Court.h"
 #include "../game_settings/Screen.h"
 using namespace std;
+
+
+enum PaddleCollision {
+    None,
+    Top,
+    Bottom,
+    Front,
+    Back, // Should never happen, unless ball glitches behind paddle
+};
+
+
+PaddleCollision ball_paddle_collision(Ball ball, Paddle paddle) {
+    
+    PaddleCollision collision = None;
+
+    Point top_front = paddle.hit_box.top_right;
+    Point btm_front = paddle.hit_box.bottom_right; 
+
+    double x_dist_from_top = fabs(ball.x_pos - top_front.x);
+    double y_dist_from_top = fabs(ball.y_pos - top_front.y);
+    double x_dist_from_btm = fabs(ball.x_pos - btm_front.x);
+    double y_dist_from_btm = fabs(ball.y_pos - btm_front.y);
+
+    if (paddle.is_player) {
+        cout << "Closest: ";
+        if (y_dist_from_btm < y_dist_from_top) {
+            cout << "btm "; 
+        }
+        else {
+            cout << "top ";
+        }
+        cout << endl;
+    }
+
+    return collision;
+}
 
 
 int game_loop() {
@@ -20,7 +57,7 @@ int game_loop() {
 
     // Game object initialization
     Ball ball;
-    ball.initialize(screen.width, screen.height);   
+    ball.initialize(screen.width, screen.height); 
 
     Paddle player;
     player.initialize(true, screen.width, screen.height, screen.frame_rate);
@@ -37,6 +74,13 @@ int game_loop() {
         ball.update();
         player.update();      
 
+        bool player_hit = ball_paddle_collision(ball, player);
+        bool opponent_hit = ball_paddle_collision(ball, opponent);
+
+        // if (player_hit || opponent_hit) {
+        //     ball.x_speed *= -1;
+        // }
+
         // ----------------- Draw objects here ------------------- //
         BeginDrawing();
         ClearBackground(BLACK);
@@ -47,7 +91,6 @@ int game_loop() {
         // Players
         player.draw();
         opponent.draw();
-        cout << "Player speed: " << player.move_speed << endl;
 
         // Ball 
         ball.draw();
