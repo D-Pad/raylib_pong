@@ -4,6 +4,7 @@
 #include "Init.h"
 #include "../game_objects/Ball.h"
 #include "../game_objects/Paddle.h"
+#include "../game_objects/Court.h"
 #include "../game_settings/Screen.h"
 using namespace std;
 
@@ -19,14 +20,17 @@ int game_loop() {
 
     // Game object initialization
     Ball ball;
-    ball.x_pos = screen.width / 2;
-    ball.y_pos = screen.height / 2;
+    ball.x_pos = screen.center_width;
+    ball.y_pos = screen.center_height;
 
     Paddle player;
     player.initialize(true, screen.width, screen.height);
 
-    Paddle opp;
-    opp.initialize(false, screen.width, screen.height);
+    Paddle opponent;
+    opponent.initialize(false, screen.width, screen.height);
+
+    Court court;
+    court.initialize(screen.center_width, screen.height);
 
     cout << "SCREEN " << screen.center_width << " " << screen.height << endl;
     while (WindowShouldClose() == false) {
@@ -39,22 +43,15 @@ int game_loop() {
         ball.check_position(screen.width, screen.height);
        
         // --------------- Draw objects here ------------------- //
-        // Ball 
-        DrawCircle(ball.x_pos, ball.y_pos, ball.radius, ORANGE);
-        
-        // Players
-        DrawRectangle(
-            player.x_pos, player.y_pos, player.width, player.height, 
-            WHITE 
-        ); 
-        DrawRectangle(
-            opp.x_pos, opp.y_pos, opp.width, opp.height, WHITE 
-        ); 
-
         // Court
-        DrawLine(
-            screen.center_width, 0, screen.center_width, screen.height, WHITE 
-        );
+        court.draw(); 
+
+        // Ball 
+        ball.draw();       
+
+        // Players
+        player.draw();
+        opponent.draw();
 
         EndDrawing();
 

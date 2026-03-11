@@ -1,4 +1,5 @@
 #include "Ball.h"
+#include "raylib.h"
 
 
 int Ball::check_position(int winW, int winH) {
@@ -13,4 +14,11 @@ int Ball::check_position(int winW, int winH) {
 
     return 0;
 };
+
+
+void Ball::draw() {
+    
+    DrawCircle(x_pos, y_pos, radius, ORANGE);
+
+}
 

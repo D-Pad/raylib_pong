@@ -1,4 +1,5 @@
 #include "Paddle.h"
+#include "raylib.h"
 
 
 void Paddle::move(Direction dir) {
@@ -34,6 +35,11 @@ void Paddle::initialize(bool isPlayer, int winW, int winH) {
     else x_pos = winW - (width + padding);
 
 
+}
+
+
+void Paddle::draw() {
+    DrawRectangle(x_pos, y_pos, width, height, WHITE); 
 }
 
 

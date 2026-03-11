@@ -15,6 +15,7 @@ struct Paddle {
 
     void initialize(bool isPlayer, int winW, int winH);
     void move(Direction dir);
+    void draw();
 };
 
 
