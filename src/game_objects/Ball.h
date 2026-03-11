@@ -3,11 +3,13 @@
 
 struct Ball {
 
-    int ball_x = 100;
-    int ball_y = 100;
-    int ball_x_speed = 5;
-    int ball_y_speed = 5;
-    int ball_radius = 15;
+    int x = 100;
+    int y = 100;
+    int x_speed = 5;
+    int y_speed = 5;
+    int radius = 15;
+
+    int check_position(int winW, int winH);
 
 };
 

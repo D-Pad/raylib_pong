@@ -1,4 +1,5 @@
 #include <iostream>
+#include <raylib.h>
 #include "Cleanup.h"
 #include "Init.h"
 #include "../game_objects/Ball.h"
@@ -11,8 +12,24 @@ int game_loop() {
     Screen screen { 800, 600 };
     Ball ball; 
 
-    cout << "BALL!" << endl;
-    cout << ball.ball_x << endl;
+    InitWindow(screen.width, screen.height, "PONG!");
+    SetTargetFPS(60);
+    
+    while (WindowShouldClose() == false) {
+
+        BeginDrawing();
+        ClearBackground(BLACK);
+        
+        ball.x += ball.x_speed;
+        ball.y += ball.y_speed;
+        ball.check_position(screen.width, screen.height);
+
+        DrawCircle(ball.x, ball.y, ball.radius, WHITE);
+        EndDrawing();
+
+    }
+
+    CloseWindow();
     return 0;
 
 }
