@@ -3,28 +3,59 @@
 #include "Cleanup.h"
 #include "Init.h"
 #include "../game_objects/Ball.h"
+#include "../game_objects/Paddle.h"
 #include "../game_settings/Screen.h"
 using namespace std;
 
 
 int game_loop() {
 
-    Screen screen { 800, 600 };
-    Ball ball; 
+    // Game screen initialization
+    Screen screen;
+    screen.initialize(1920, 1080);
 
     InitWindow(screen.width, screen.height, "PONG!");
     SetTargetFPS(60);
-    
+
+    // Game object initialization
+    Ball ball;
+    ball.x_pos = screen.width / 2;
+    ball.y_pos = screen.height / 2;
+
+    Paddle player;
+    player.initialize(true, screen.width, screen.height);
+
+    Paddle opp;
+    opp.initialize(false, screen.width, screen.height);
+
+    cout << "SCREEN " << screen.center_width << " " << screen.height << endl;
     while (WindowShouldClose() == false) {
 
         BeginDrawing();
         ClearBackground(BLACK);
         
-        ball.x += ball.x_speed;
-        ball.y += ball.y_speed;
+        ball.x_pos += ball.x_speed;
+        ball.y_pos += ball.y_speed;
         ball.check_position(screen.width, screen.height);
+       
+        // --------------- Draw objects here ------------------- //
+        // Ball 
+        DrawCircle(ball.x_pos, ball.y_pos, ball.radius, ORANGE);
+        
+        // Players
+        DrawRectangle(
+            player.x_pos, player.y_pos, player.width, player.height, 
+            WHITE 
+        ); 
+        DrawRectangle(
+            opp.x_pos, opp.y_pos, opp.width, opp.height, WHITE 
+        ); 
 
-        DrawCircle(ball.x, ball.y, ball.radius, WHITE);
+        // Court
+        DrawLine(
+            screen.center_width, 0, screen.center_width, screen.height, WHITE 
+        );
+
         EndDrawing();
 
     }

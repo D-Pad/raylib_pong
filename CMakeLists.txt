@@ -14,6 +14,8 @@ FetchContent_MakeAvailable(raylib)
 add_executable(
 	pong
 	src/game_objects/Ball.cpp
+	src/game_objects/Paddle.cpp
+	src/game_settings/Screen.cpp
 	src/core/Cleanup.cpp
 	src/core/Init.cpp
 	src/core/Core.cpp
