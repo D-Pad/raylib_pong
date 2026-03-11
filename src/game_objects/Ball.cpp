@@ -2,16 +2,16 @@
 #include "raylib.h"
 
 
-void Ball::initialize(int winW, int winH) {
+void Ball::initialize(int winW, int winH, int frameRate) {
     max_width = winW;
     max_height = winH;
     x_pos = winW / 2.0;
     y_pos = winH / 2.0;
-
+    acceleration = 0.1;
 }
 
 
-int Ball::check_position() {
+int Ball::update_position() {
 
     if (x_pos + radius >= max_width || x_pos - radius <= 0) {
         x_speed *= -1;
@@ -35,7 +35,7 @@ void Ball::move() {
 }
 
 void Ball::update() {
-    check_position();
+    update_position();
     move();
 }
 
