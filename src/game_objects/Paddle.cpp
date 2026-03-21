@@ -1,6 +1,5 @@
-#include "Paddle.h"
+#include "GameObjects.h"
 #include "raylib.h"
-#include "Point.h"
 #include <cmath>
 
 

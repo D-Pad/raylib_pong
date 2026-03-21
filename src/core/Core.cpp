@@ -1,11 +1,8 @@
 #include <iostream>
 #include <algorithm>
 #include <raylib.h>
-#include "Cleanup.h"
-#include "Init.h"
-#include "../game_objects/Ball.h"
-#include "../game_objects/Paddle.h"
-#include "../game_objects/Court.h"
+#include "Core.h"
+#include "../game_objects/GameObjects.h"
 #include "../game_settings/Screen.h"
 using namespace std;
 

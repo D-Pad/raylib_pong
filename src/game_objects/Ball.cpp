@@ -1,4 +1,4 @@
-#include "Ball.h"
+#include "GameObjects.h"
 #include "raylib.h"
 #include <cmath>
 
@@ -6,7 +6,7 @@
 void Ball::draw() {
     DrawCircle(x_pos, y_pos, radius, ORANGE);
     Point endSegment = get_center_line(true);
-    DrawLine(x_pos, y_pos, endSegment.x, endSegment.y, WHITE);
+    // DrawLine(x_pos, y_pos, endSegment.x, endSegment.y, WHITE);
 }
 
 
