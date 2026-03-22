@@ -2,7 +2,7 @@
 using namespace std;
 
 
-int initialize() {
+int Initialize() {
 
     cout << "Initializing game environment" << endl;
 

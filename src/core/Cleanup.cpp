@@ -2,7 +2,7 @@
 using namespace std;
 
 
-int cleanup() {
+int Cleanup() {
 
     cout << "Cleaning up" << endl;
 

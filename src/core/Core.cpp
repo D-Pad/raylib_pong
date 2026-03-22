@@ -7,6 +7,13 @@
 using namespace std;
 
 
+enum GameModes {
+    SINGLEPLAYER,
+    MULTIPLAYER,
+    MENU,
+};
+
+
 enum PaddleCollision {
     None,
     Top,
@@ -16,7 +23,7 @@ enum PaddleCollision {
 };
 
 
-bool ball_paddle_collision(Ball ball, Paddle paddle) {
+bool BallPaddleCollision(const Ball& ball, const Paddle& paddle) {
     
     PaddleCollision collision = None;
 
@@ -39,7 +46,7 @@ bool ball_paddle_collision(Ball ball, Paddle paddle) {
 }
 
 
-int game_loop() {
+int GameLoop() {
 
     // Game screen initialization
     Screen screen;
@@ -61,51 +68,86 @@ int game_loop() {
     Court court;
     court.initialize(screen.center_width, screen.height);
 
+    GameModes menu = SINGLEPLAYER;
+    
     while (WindowShouldClose() == false) {
 
         // ---------------- Update objects here ------------------ //
-        ball.update();
-        player.update();      
+        bool below_top;
+        bool above_btm;
+        bool player_hit; 
+        bool opponent_hit;
 
-        bool player_hit = ball_paddle_collision(ball, player);
-        bool opponent_hit = ball_paddle_collision(ball, opponent);
+        switch(menu) {
 
-        if (player_hit || opponent_hit) {
-            
-            ball.dx *= -1;
-            
-            bool below_top = ball.y_pos <= player.hit_box.top_right.y;
-            bool above_btm = ball.y_pos >= player.hit_box.bottom_right.y;
-           
-            // Clip prevention
-            if (player_hit) {
-                double target = player.hit_box.top_right.x;
-                if (ball.x_pos - ball.radius <= target) {
-                    ball.x_pos = player.hit_box.top_right.x + ball.radius;
+            case MENU:
+
+                break;
+
+            case SINGLEPLAYER:
+            case MULTIPLAYER:
+                
+                ball.update();
+                player.update();      
+
+                player_hit = BallPaddleCollision(ball, player);
+                opponent_hit = BallPaddleCollision(ball, opponent);
+
+                if (player_hit || opponent_hit) {
+                    
+                    ball.dx *= -1;
+                    
+                    below_top = ball.y_pos <= player.hit_box.top_right.y;
+                    above_btm = ball.y_pos >= player.hit_box.bottom_right.y;
+                   
+                    // Clip prevention
+                    if (player_hit) {
+                        double target = player.hit_box.top_right.x;
+                        if (ball.x_pos - ball.radius <= target) {
+                            double player_tr = player.hit_box.top_right.x;
+                            ball.x_pos = player_tr + ball.radius;
+                        }
+                    }
+                    else if (opponent_hit) {
+                        double target = opponent.hit_box.bottom_left.x;
+                        if (ball.x_pos + ball.radius >= target) {
+                            double opp_tl = opponent.hit_box.bottom_left.x;
+                            ball.x_pos = opp_tl - ball.radius;
+                        }           
+                    };
+                
                 }
-            }
-            else if (opponent_hit) {
-                double target = opponent.hit_box.bottom_left.x;
-                if (ball.x_pos + ball.radius >= target) {
-                    ball.x_pos = opponent.hit_box.bottom_left.x - ball.radius;
-                }           
-            };
-        
-        }
+
+                break;
+
+        };
 
         // ----------------- Draw objects here ------------------- //
         BeginDrawing();
         ClearBackground(BLACK);
-        
-        // Court
-        court.draw(); 
 
-        // Players
-        player.draw();
-        opponent.draw();
+        switch(menu) {
 
-        // Ball 
-        ball.draw();
+            case MENU:
+
+                break;
+
+            case SINGLEPLAYER:
+            case MULTIPLAYER:
+
+                // Court
+                court.draw(); 
+
+                // Players
+                player.draw();
+                opponent.draw();
+
+                // Ball 
+                ball.draw();
+
+                break;
+
+        };
 
         EndDrawing();
 
@@ -117,25 +159,25 @@ int game_loop() {
 }
 
 
-int run_game_loop() {
+int RunGameLoop() {
 
     int exit_code;
 
-    int init_code = initialize();
+    int init_code = Initialize();
     if (init_code != 0) {
         cout << "Initialization failed" << endl;
         return init_code; 
     }
 
     cout << "Running main game loop" << endl;
-    int game_code = game_loop();
+    int game_code = GameLoop();
     if (game_code != 0) {
         cout << "ERROR: " << game_code << endl;
         return game_code; 
     }
 
     int cleanup_code;
-    cleanup_code = cleanup();
+    cleanup_code = Cleanup();
     if (cleanup_code != 0) {
         cout << "Cleanup failed" << endl;
         return cleanup_code;

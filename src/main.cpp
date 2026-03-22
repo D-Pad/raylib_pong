@@ -5,6 +5,6 @@ using namespace std;
 
 int main() {
 
-    return run_game_loop();
+    return RunGameLoop();
 
 }
