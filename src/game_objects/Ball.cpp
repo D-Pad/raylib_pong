@@ -69,7 +69,6 @@ void Ball::initialize(int winW, int winH) {
     max_height = winH;
     x_pos = winW / 2.0;
     y_pos = winH / 2.0;
-    acceleration = 0.1;
     angle = get_angle(); 
 }
 

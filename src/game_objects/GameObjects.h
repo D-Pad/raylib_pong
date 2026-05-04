@@ -14,9 +14,9 @@ struct Ball {
     double dx = 1.0;
     double dy = 0.5;
     double speed = 5.0;
-    double angle;
+    double angle = 0.0;
     double max_speed = 20.0;
-    double acceleration;
+    double acceleration = 0.1;
     double radius = 20.0;
 
     int max_width, max_height;
@@ -34,8 +34,8 @@ struct Ball {
 struct Court {
 
     // Half court line
-    int line_x;
-    int line_y;
+    int line_x = 0;
+    int line_y = 0;
 
     void initialize(int lineX, int lineY);
     void draw();
@@ -54,11 +54,11 @@ struct PaddleHitBox {
 
 struct Paddle {
 
-    bool is_player;
+    bool is_player = false;
     int width = 20;
     double move_speed = 0;
     double max_speed = 10;
-    double acceleration_rate;
+    double acceleration_rate = 0.0;
     int height, x_pos, y_pos, max_y_pos;
     PaddleHitBox hit_box;
 

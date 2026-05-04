@@ -73,10 +73,10 @@ int GameLoop() {
     while (WindowShouldClose() == false) {
 
         // ---------------- Update objects here ------------------ //
-        bool below_top;
-        bool above_btm;
-        bool player_hit; 
-        bool opponent_hit;
+        bool below_top = false;
+        bool above_btm = false;
+        bool player_hit = false; 
+        bool opponent_hit = false;
 
         switch(menu) {
 
